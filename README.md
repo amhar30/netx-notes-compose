@@ -134,4 +134,16 @@ Evidence:
 
 ## Tasks 6 and 7
 
-Healthchecks, startup dependencies, service scaling, resource limits, and their verification evidence will be documented after those tasks are completed.
+### Task 6 — Healthchecks and Startup Order
+
+Added healthchecks for PostgreSQL, Redis, the Flask API, and Nginx.
+
+The API waits for the database and cache to become healthy.
+The proxy waits for the API to become healthy.
+All services use `restart: unless-stopped`.
+
+Verification:
+
+```bash
+docker compose ps
+curl http://localhost:8080/health
