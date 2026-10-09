@@ -132,7 +132,6 @@ Evidence:
 
 3. **Initial API connection reset:** The first health request was sent immediately after starting the containers. Retrying after startup completed returned HTTP 200 and `{"status":"ok"}`.
 
-## Tasks 6 and 7
 
 ### Task 6 — Healthchecks and Startup Order
 
@@ -147,3 +146,25 @@ Verification:
 ```bash
 docker compose ps
 curl http://localhost:8080/health
+
+### Task 7 — Scaling and Resource Limits
+
+Scaled the API to three replicas using:
+
+`docker compose up -d --build --scale api=3`
+
+The Nginx reverse proxy forwards requests to the API service.
+The `served_by` field was used to identify which API replica handled
+each request.
+
+Each API replica has resource limits of 0.50 CPU and 256 MB memory.
+
+A fixed host port cannot be published by all three API replicas
+because they would compete for the same host port. The API therefore
+uses its internal container port, while only Nginx publishes port 8080.
+
+Verification:
+
+`docker compose ps`
+
+`docker stats --no-stream`

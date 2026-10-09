@@ -41,7 +41,11 @@
       retries: 3
       start_period: 10s
     restart: unless-stopped
-
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 256M
   db:
     image: postgres:16-alpine
     environment:
