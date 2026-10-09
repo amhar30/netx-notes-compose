@@ -33,7 +33,9 @@
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     networks:
       - backend
-
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    
   cache:
     image: redis:7-alpine
     networks:
@@ -43,3 +45,6 @@ networks:
   frontend:
   backend:
     internal: true
+
+volumes:
+   pgdata:
